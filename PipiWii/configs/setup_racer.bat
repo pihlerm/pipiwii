@@ -1,0 +1,1 @@
+copy config_racer.h ..\config.h

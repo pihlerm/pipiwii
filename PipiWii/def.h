@@ -1470,6 +1470,27 @@
   #define SERVO_3_PIN_LOW            PORTL &= ~(1<<3);
 #endif
 
+#if defined(CRIUS_AIO_PRO_NOMAG) 
+  #define MPU6050 
+  #define MS561101BA 
+  #define ACC_ORIENTATION(X, Y, Z)  {imu.accADC[ROLL]  = -X; imu.accADC[PITCH]  = -Y; imu.accADC[YAW]  =  Z;} 
+  #define GYRO_ORIENTATION(X, Y, Z) {imu.gyroADC[ROLL] =  Y; imu.gyroADC[PITCH] = -X; imu.gyroADC[YAW] = -Z;} 
+  //#define MPU6050_I2C_AUX_MASTER // MAG connected to the AUX I2C bus of MPU6050 
+  //#undef INTERNAL_I2C_PULLUPS 
+  //#define I2C_SPEED 400000L         //400kHz fast mode
+  //servo pins on AIO board is at pins 44,45,46, then release pins 33,34,35 for other usage
+  //eg. pin 33 on AIO can be used for LEDFLASHER output
+  #define SERVO_1_PINMODE            pinMode(44,OUTPUT);        // TILT_PITCH
+  #define SERVO_1_PIN_HIGH           PORTL |= 1<<5;
+  #define SERVO_1_PIN_LOW            PORTL &= ~(1<<5);
+  #define SERVO_2_PINMODE            pinMode(45,OUTPUT);        // TILT_ROLL 
+  #define SERVO_2_PIN_HIGH           PORTL |= 1<<4;
+  #define SERVO_2_PIN_LOW            PORTL &= ~(1<<4);
+  #define SERVO_3_PINMODE            pinMode(46,OUTPUT);        // CAM TRIG
+  #define SERVO_3_PIN_HIGH           PORTL |= 1<<3;
+  #define SERVO_3_PIN_LOW            PORTL &= ~(1<<3);
+#endif
+
 #if defined(LADYBIRD)
   #define MPU6050
   #define ACC_ORIENTATION(X, Y, Z)  {imu.accADC[ROLL]  = -X; imu.accADC[PITCH]  = -Y; imu.accADC[YAW]  =  Z;}

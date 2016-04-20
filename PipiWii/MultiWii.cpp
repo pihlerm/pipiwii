@@ -1308,10 +1308,9 @@ void loop () {
 
     #endif //GPS
 
-	#ifdef TRIKOPLAN
-      if (rcOptions[BOXTRIKOPLANMODE]) {f.TRIKOPLAN_mode = 1;} else {f.TRIKOPLAN_mode = 0;} 
-	
-	#endif
+    #ifdef TRIKOPLAN
+      if (rcOptions[BOXTRIKOPLANMODE]) {f.TRIKOPLAN_mode = 1;} else {f.TRIKOPLAN_mode = 0;}	
+    #endif
 
 	
     #if defined(FIXEDWING) || defined(HELICOPTER)

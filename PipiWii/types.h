@@ -95,8 +95,7 @@ typedef struct {
   int16_t  magADC[3];
   int16_t  gyroADC[3];
   int16_t  accADC[3];
-  int16_t  angleG;
-  
+
   #ifdef RMS_SAMPLING 
   int32_t  accRMS;    // current RMS of acc (x,y) values
   int32_t  accRMSsum;    // current RMS sum of acc (x,y) values

@@ -53,8 +53,6 @@
     #define ID_Voltage_Amp_bp     0x3A
     #define ID_Voltage_Amp_ap     0x3B
     #define ID_Current            0x28
-    #define ID_Vspd               0x30
-    
 #endif // FRSKY_TELEMETRY
 
 #if defined(SPORT_TELEMETRY) // TO BE DONE

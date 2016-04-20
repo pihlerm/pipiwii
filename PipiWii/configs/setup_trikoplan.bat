@@ -1,0 +1,1 @@
+copy config_trikoplan.h ..\config.h

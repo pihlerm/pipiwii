@@ -1,0 +1,1 @@
+copy config_ticmrlj.h ..\config.h
