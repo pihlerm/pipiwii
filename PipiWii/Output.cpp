@@ -1154,7 +1154,6 @@ void mixTable() {
   #elif defined( TRIKOPLAN )
 
    // 1 = use TRIKOPLAN special mix; 0 = use TRI mix
-  float p_diff; 
   float power_sub;
   static float fiangle_aux = 0;
   
@@ -1167,18 +1166,18 @@ void mixTable() {
     tkp_c_pow = (rcData[AUX4] -1000) / 1000.0; 
     if(tkp_c_pow<0) tkp_c_pow=0;
 
-    p_diff = pressure_diff; 
-    debug[3] = p_diff;	
-    tkp_fiangle = p_diff * tkp_c_fi / TRIKOPLAN_PRESSURE_CRTICAL; // result must be 0..1
+    debug[3] = pressure_diff;	
+    tkp_fiangle = pressure_diff * tkp_c_fi / TRIKOPLAN_PRESSURE_CRTICAL; // result must be 0..1
     fiangle_aux = (rcData[AUX2] -1000)/1000.0;
     
     tkp_fiangle = tkp_fiangle + fiangle_aux;
     
     if(tkp_fiangle > 1) tkp_fiangle=1;
     debug[2] = tkp_fiangle*90;
-    power_sub = p_diff * tkp_c_pow * (TRIKOPLAN_MOTOR_HOVER - MINTHROTTLE) / TRIKOPLAN_PRESSURE_CRTICAL ; // [0..1024] * [0..kmax]
+    power_sub = pressure_diff * tkp_c_pow * (TRIKOPLAN_MOTOR_HOVER - MINTHROTTLE) / TRIKOPLAN_PRESSURE_CRTICAL ; // [0..1024] * [0..kmax]
 	
-    motor[0] = PIDMIX( 0, (1-tkp_fiangle), 0); //REAR
+    // PIDMIX ( roll, pitch, yaw)
+	motor[0] = PIDMIX( 0, (1-tkp_fiangle), 0); //REAR
     motor[1] = PIDMIX((tkp_fiangle-1),-2/3, 0) - power_sub; //RIGHT
     motor[2] = PIDMIX((1-tkp_fiangle),-2/3, 0) - power_sub; //LEFT
     tkp_fmotors = power_sub;
@@ -1190,8 +1189,13 @@ void mixTable() {
     motor[3] = motor[2];
     
     servo[3] = ((int32_t)conf.servoConf[3].rate * axisPID[YAW])/50L + get_middle(3); // GIMBAL YAW
+
+	// dynamic rate for PITCH control via gimbal
+	float dyn_rate;
+	dyn_rate = 1 - pressure_diff / TRIKOPLAN_PRESSURE_CRTICAL;
+	if(dyn_rate < 0.3) dyn_rate = 0.3;
     
-    servo[4] = (tkp_fiangle) * SERVODIR(4, 128) * (int32_t)conf.servoConf[4].rate * axisPID[PITCH] / 50L + tkp_fiangle*(conf.servoConf[4].middle-S_O_PT) + S_O_PT; // GIMBAL PITCH
+    servo[4] = dyn_rate*(tkp_fiangle) * SERVODIR(4, 128) * (int32_t)conf.servoConf[4].rate * axisPID[PITCH] / 50L + tkp_fiangle*(conf.servoConf[4].middle-S_O_PT) + S_O_PT; // GIMBAL PITCH
     midpoint  = (conf.servoConf[4].min+conf.servoConf[4].max)/2;
     servo[4] =  midpoint + SERVODIR(4, 128) * (midpoint - servo[4]); // reverse if needed
 	
