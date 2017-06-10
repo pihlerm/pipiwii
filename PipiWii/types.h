@@ -85,6 +85,8 @@ enum box {
   #endif
   #ifdef TRIKOPLAN
     BOXTRIKOPLANMODE,
+    BOXGEAR,
+    BOXWINGLOCK,
   #endif
   CHECKBOXITEMS
 };
@@ -159,7 +161,9 @@ typedef struct {
   uint8_t LAND_IN_PROGRESS: 1;
 #endif
 #ifdef TRIKOPLAN
-  uint8_t TRIKOPLAN_mode: 1; // when this flag is set, fly with TRIKOPLAN mix, else with TRI-mix
+  uint8_t TRIKOPLAN_mode: 1;// when this flag is set, fly with TRIKOPLAN mix, else with TRI-mix
+  uint8_t GEAR_up: 1;       // when this flag is set, gear is up
+  uint8_t WING_lock: 1;     // when this flag is set, wings are locked
 #endif
 } flags_struct_t;
 

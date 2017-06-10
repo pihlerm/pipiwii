@@ -457,6 +457,8 @@ void evaluateCommand(uint8_t c) {
       #endif
       #if defined(TRIKOPLAN)
         if(rcOptions[BOXTRIKOPLANMODE]) tmp |= 1<<BOXTRIKOPLANMODE;
+        if(rcOptions[BOXGEAR]) tmp |= 1<<BOXGEAR;
+        if(rcOptions[BOXWINGLOCK]) tmp |= 1<<BOXWINGLOCK;
       #endif
       if(f.ARMED) tmp |= 1<<BOXARM;
       st.flag             = tmp;

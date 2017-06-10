@@ -234,7 +234,7 @@
   #define PRI_SERVO_TO     TRI_SERVO
 #elif defined(TRIKOPLAN)
   #define NUMBER_MOTOR     4
-  #define PRI_SERVO_FROM   4 // TRICOPLAN : use servos 4,5,7,8
+  #define PRI_SERVO_FROM   1 // TRICOPLAN : use servos 1,2,4,5,7,8
   #define PRI_SERVO_TO     5
   #define SEC_SERVO_FROM   7 
   #define SEC_SERVO_TO     8

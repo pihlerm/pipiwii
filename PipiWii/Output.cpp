@@ -1160,10 +1160,15 @@ void mixTable() {
   int16_t midpoint;
   #define S_O_PT (conf.servoConf[4].rate > 0 ? conf.servoConf[4].min : conf.servoConf[4].max)
   
+  // GEAR control
+  servo[0] = 1000 + 1000*f.GEAR_up;
+  // WING lock control
+  servo[1] = 1000 + 1000*f.WING_lock;
+  
   if (f.TRIKOPLAN_mode) {
     tkp_c_fi = (rcData[AUX3] -1000) / 1000.0; 
+    tkp_c_pow = tkp_c_fi;
     if(tkp_c_fi<0) tkp_c_fi=0;
-    tkp_c_pow = (rcData[AUX4] -1000) / 1000.0; 
     if(tkp_c_pow<0) tkp_c_pow=0;
 
     debug[3] = pressure_diff;	

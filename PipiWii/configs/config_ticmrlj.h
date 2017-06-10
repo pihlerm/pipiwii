@@ -532,7 +532,7 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
     /* This is the speed of the serial interfaces */
     #define SERIAL0_COM_SPEED 115200
     #define SERIAL1_COM_SPEED 115200 // GPS
-    #define SERIAL2_COM_SPEED 115200  // wifi
+    #define SERIAL2_COM_SPEED 115200  // OSD
     #define SERIAL3_COM_SPEED 9600  // Telemetry FRSKY
 
     /* when there is an error on I2C bus, we neutralize the values during a short time. expressed in microseconds
@@ -710,12 +710,12 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
        in NMEA mode the GPS must be configured to output GGA and RMC NMEA sentences (which is generally the default conf for most GPS devices)
        at least 5Hz update rate. uncomment the first line to select the GPS serial port of the arduino */
        
-    #define GPS_SERIAL 1         // should be 2 for flyduino v2. It's the serial port number on arduino MEGA
+    #define GPS_SERIAL 2         // should be 2 for flyduino v2. It's the serial port number on arduino MEGA
                                    // must be 0 for PRO_MINI (ex GPS_PRO_MINI)
                                    // note: Now a GPS can share MSP on the same port. The only constrain is to not use it simultaneously, and use the same port speed.
 
     // avoid using 115200 baud because with 16MHz arduino the 115200 baudrate have more than 2% speed error (57600 have 0.8% error)
-    #define GPS_BAUD   57600       // GPS_BAUD will override SERIALx_COM_SPEED for the selected port
+    #define GPS_BAUD   9600 //19200       // GPS_BAUD will override SERIALx_COM_SPEED for the selected port
 
    /* GPS protocol 
        NMEA  - Standard NMEA protocol GGA, GSA and RMC  sentences are needed
@@ -919,7 +919,7 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
   /********************************************************************/
   //#define TELEMETRY_FRSKY
   #define TELEMETRY_FRSKY_SERIAL 3
-  #define TELEMETRY_FRSKY_BAUD 9600
+  #define TELEMETRY_FRSKY_BAUD 57600
   
  // #define TELEMETRY_FRSKY_SOFTSERIAL_PIN 10  // connect FrSky Receiver's Rx sideport to D10 without a ttl inverter
   //#define TELEMETRY_FRSKY_SERIAL 9600        // if using softserial, set baudrate here (comment out "TELEMETRY_FRSKY_SERIAL 3" above)

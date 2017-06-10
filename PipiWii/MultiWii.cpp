@@ -100,6 +100,8 @@ const char boxnames[] PROGMEM = // names for dynamic generation of config GUI
 #endif
 #ifdef TRIKOPLAN
   "TRIKOPLANM;"
+  "GEAR_UP;"
+  "WING_LCK;"
 #endif
   ;
 
@@ -158,6 +160,8 @@ const uint8_t boxids[] PROGMEM = {// permanent IDs associated to boxes. This way
 #endif
 #ifdef TRIKOPLAN
   30, //"TRIKOPLANM;"
+  31, //"GEAR_UP;"
+  32, //"WING_LCK;"
 #endif
   };
 
@@ -299,7 +303,7 @@ uint16_t lookupThrottleRC[11];// lookup table for expo & mid THROTTLE
 // *************************
 // motor and servo functions
 // *************************
-int16_t axisPID[3];
+int16_t axisPID[NUM_PID];
 int16_t motor[8];
 int16_t servo[8] = {1500,1500,1500,1500,1500,1500,1500,1000};
 
@@ -1309,7 +1313,60 @@ void loop () {
     #endif //GPS
 
     #ifdef TRIKOPLAN
-      if (rcOptions[BOXTRIKOPLANMODE]) {f.TRIKOPLAN_mode = 1;} else {f.TRIKOPLAN_mode = 0;}	
+      if (rcOptions[BOXTRIKOPLANMODE]) {f.TRIKOPLAN_mode = 1;} else {f.TRIKOPLAN_mode = 0;}
+
+      //******* GEAR **** //
+      // delay transit by 500 ms
+      //if (rcOptions[BOXGEAR]) {f.GEAR_up = 1;} else {f.GEAR_up = 0;}
+      static uint32_t gearTime = millis();
+
+      if (rcOptions[BOXGEAR]) {
+        if(f.GEAR_up==1) {
+          // gear already up, cancel transit, reset transit time
+          gearTime = millis();
+        } else {
+          // gear down commanded up, wait for specified time
+          if ( (millis() - gearTime) > 500 ) {
+            f.GEAR_up=1;
+          }
+        }
+      } else {
+        if(f.GEAR_up==1) {
+          // gear up,  commanded down, wait for specified time 
+          if ( (millis() - gearTime) > 500 ) {
+            f.GEAR_up=0;
+          }
+        } else {
+          // gear already down, cancel transit, reset transit time
+          gearTime = millis();
+        }        
+      }
+      //******* WING LOCK **** //
+      // delay transit by 500 ms
+      //if (rcOptions[BOXWINGLOCK]) {f.WING_lock = 1;} else {f.WING_lock = 0;}
+      static uint32_t wingTime = millis();
+
+      if (rcOptions[BOXWINGLOCK]) {
+        if(f.WING_lock==1) {
+          // wing already locked, cancel transit, reset transit time
+          wingTime = millis();
+        } else {
+          // wing locked, commanded unlock, wait for specified time
+          if ( (millis() - wingTime) > 500 ) {
+            f.WING_lock=1;
+          }
+        }
+      } else {
+        if(f.WING_lock==1) {
+          // wing un-locked,  commanded lock, wait for specified time 
+          if ( (millis() - wingTime) > 500 ) {
+            f.WING_lock=0;
+          }
+        } else {
+          // wing already un-locked, cancel transit, reset transit time
+          wingTime = millis();
+        }        
+      }
     #endif
 
 	

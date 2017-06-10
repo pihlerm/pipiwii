@@ -76,7 +76,8 @@ extern int16_t angle[2];
   extern uint16_t tkp_fmotors;        // 1000-2000 front motors speed
 #endif
 
-extern int16_t axisPID[3];
+#define NUM_PID 4
+extern int16_t axisPID[NUM_PID];
 extern int16_t motor[8];
 extern int16_t servo[8];
 
