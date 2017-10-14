@@ -1196,8 +1196,9 @@ void mixTable() {
     servo[3] = ((int32_t)conf.servoConf[3].rate * axisPID[YAW])/50L + get_middle(3); // GIMBAL YAW
 
 	// dynamic rate for PITCH control via gimbal
-	float dyn_rate;
-	dyn_rate = 1 - pressure_diff / TRIKOPLAN_PRESSURE_CRTICAL;
+	float dyn_rate=0;
+	// 10.6.2017 disabled dynamic pitch rate
+	//dyn_rate = 1 - pressure_diff / TRIKOPLAN_PRESSURE_CRTICAL;
 	if(dyn_rate < 0.3) dyn_rate = 0.3;
     
     servo[4] = dyn_rate*(tkp_fiangle) * SERVODIR(4, 128) * (int32_t)conf.servoConf[4].rate * axisPID[PITCH] / 50L + tkp_fiangle*(conf.servoConf[4].middle-S_O_PT) + S_O_PT; // GIMBAL PITCH
