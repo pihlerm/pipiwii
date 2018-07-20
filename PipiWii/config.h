@@ -211,8 +211,8 @@
       
             
       // Air speed Sensor
-      #define AIRSPEED
-      #define AIRSPEEDPIN              A4
+      //#define AIRSPEED
+      //#define AIRSPEEDPIN              A0
  
 
       /* enforce your individual sensor orientation - even overrides board specific defaults */
@@ -244,7 +244,7 @@
     #define YAW_DIRECTION 1
     //#define YAW_DIRECTION -1 // if you want to reverse the yaw correction direction
 
-    #define ONLYARMWHENFLAT //prevent the copter from arming when the copter is tilted
+    //#define ONLYARMWHENFLAT //prevent the copter from arming when the copter is tilted
 
    /********************************    ARM/DISARM    *********************************/
    /* optionally disable stick combinations to arm/disarm the motors.
@@ -338,6 +338,12 @@
     // boost front motors% 
     #define TRIKOPLAN_FRONT_BOOST 150
 
+	// reverse TRI configuration; yaw motor in front
+	#define TRI_REVERSE
+	// V-TAIL servo mixing of pitch/yaw on servos 4&5
+	// (combined) aileron on servo 3
+	// otherwise alierons are on servos 4&5 and no pitch/yaw servos (no tail!)
+	#define TRIKOPLAN_VTAIL
 
 
 
@@ -505,9 +511,9 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
 
   /* only enable any of this if you must change the default pin assignment, e.g. your board does not have a specific pin */
   /* you may need to change PINx and PORTx plus #shift according to the desired pin! */
-  #define OVERRIDE_V_BATPIN                   A0 // instead of A3    // Analog PIN 3
+  #define OVERRIDE_V_BATPIN                   A1 // instead of A3    // Analog PIN 3
 
-  //#define OVERRIDE_PSENSORPIN                 A1 // instead of A2    // Analog PIN 2
+  #define OVERRIDE_PSENSORPIN                 A4 // instead of A2    // Analog PIN 2
 
   //#define OVERRIDE_LEDPIN_PINMODE             pinMode (A1, OUTPUT); // use A1 instead of d13
   //#define OVERRIDE_LEDPIN_TOGGLE              PINC |= 1<<1; // PINB |= 1<<5;     //switch LEDPIN state (digital PIN 13)
@@ -706,7 +712,7 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
        in NMEA mode the GPS must be configured to output GGA and RMC NMEA sentences (which is generally the default conf for most GPS devices)
        at least 5Hz update rate. uncomment the first line to select the GPS serial port of the arduino */
        
-    #define GPS_SERIAL 1         // should be 2 for flyduino v2. It's the serial port number on arduino MEGA
+    //#define GPS_SERIAL 1         // should be 2 for flyduino v2. It's the serial port number on arduino MEGA
                                    // must be 0 for PRO_MINI (ex GPS_PRO_MINI)
                                    // note: Now a GPS can share MSP on the same port. The only constrain is to not use it simultaneously, and use the same port speed.
 
@@ -914,7 +920,7 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
  /********************************************************************/
   /****                         FrSky Telemetry                    ****/
   /********************************************************************/
-  #define TELEMETRY_FRSKY
+  //#define TELEMETRY_FRSKY
   #define TELEMETRY_FRSKY_SERIAL 3
   #define TELEMETRY_FRSKY_BAUD 9600
   
@@ -996,9 +1002,9 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
        2 - soft: - (good results +-5% for plush and mystery ESCs @ 2S and 3S, not good with SuperSimple ESC)    */
     //#define POWERMETER_SOFT
     //#define POWERMETER_HARD
-    #define PSENSORNULL 510 /* (*) hard only: set to analogRead() value for zero current; for I=0A my sensor
+    #define PSENSORNULL 548 /* (*) hard only: set to analogRead() value for zero current; for I=0A my sensor
                                    gives 1/2 Vss; that is approx 2.49Volt; */
-    #define PINT2mA 132     /* (*) hard: one integer step on arduino analog translates to mA (example 4.9 / 37 * 1000) ;
+    #define PINT2mA 195     /* (*) hard: one integer step on arduino analog translates to mA (example 4.9 / 37 * 1000) ;
                                    soft: use fictional value, start with 100.
                                    for hard and soft: larger PINT2mA will get you larger value for power (mAh equivalent) */
     //#define WATTS // compute and display the actual watts (=Volt*Ampere) consumed - requires both POWERMETER_HARD and VBAT
@@ -1092,7 +1098,7 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
   /**************************************************************************************/
     /* motors will not spin when the throttle command is in low position
        this is an alternative method to stop immediately the motors */
-    //#define MOTOR_STOP
+    #define MOTOR_STOP
 
     /* some radios have not a neutral point centered on 1500. can be changed here */
     #define MIDRC 1500
@@ -1208,7 +1214,7 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
     //#define DEBUGMSG
 
 
-  #define SERIALOG
+  //#define SERIALOG
   #define SERIALOG_PORT  2
   #define SERIALOG_BAUD  115200
   #define SERIALOG_D_ASPD      // log airspeed

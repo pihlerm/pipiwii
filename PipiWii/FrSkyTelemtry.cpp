@@ -238,10 +238,10 @@ void send_Fuel_level(void)
 {
   uint16_t Datas_Fuel_level;
 
-  //Datas_Fuel_level = (pMeter[PMOTOR_SUM] >> 12); 
+  Datas_Fuel_level = (pMeter[PMOTOR_SUM] >> 12); 
 
-  //sendDataHead(ID_Fuel_level);
-  //write_FrSky16(Datas_Fuel_level); 
+  sendDataHead(ID_Fuel_level);
+  write_FrSky16(Datas_Fuel_level); 
 }
 
 // Temperature 2

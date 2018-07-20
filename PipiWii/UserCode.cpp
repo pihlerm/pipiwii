@@ -103,8 +103,8 @@ void userLoopFast() {
 
    #if defined(AIRSPEED)
       ReadAirSpeed();
-      debug[0]= pressure_diff;
-      debug[1]= air_pressure;    
+      //debug[0]= pressure_diff;
+      //debug[1]= air_pressure;    
    #endif
 
   
