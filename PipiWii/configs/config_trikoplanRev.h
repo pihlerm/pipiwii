@@ -70,7 +70,7 @@
   /****************************    Mincommand          *******************************/
     /* this is the value for the ESCs when they are not armed
        in some cases, this value must be lowered down to 900 for some specific ESCs, otherwise they failed to initiate */
-    #define MINCOMMAND  1000
+    #define MINCOMMAND  950
 
   /**********************************  I2C speed for old WMP config (useless config for other sensors)  *************/
     #define I2C_SPEED 100000L     //100kHz normal mode, this value must be used for a genuine WMP
@@ -1098,7 +1098,7 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
   /**************************************************************************************/
     /* motors will not spin when the throttle command is in low position
        this is an alternative method to stop immediately the motors */
-    //#define MOTOR_STOP
+    #define MOTOR_STOP
 
     /* some radios have not a neutral point centered on 1500. can be changed here */
     #define MIDRC 1500

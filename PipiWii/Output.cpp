@@ -1185,7 +1185,7 @@ void mixTable() {
 #ifdef AIRSPEED
     power_sub = pressure_diff * tkp_c_pow * (TRIKOPLAN_MOTOR_HOVER - MINTHROTTLE) / TRIKOPLAN_PRESSURE_CRTICAL ; // [0..1024] * [0..kmax]
 #else
-    power_sub = tkp_fiangle/90.0 * 1024; // [0..1024] * [0..kmax]
+    power_sub = 0;
 #endif	
     // PIDMIX ( roll, pitch, yaw)
   #ifdef TRI_REVERSE
@@ -1203,17 +1203,34 @@ void mixTable() {
       motor[1] = ((float)(motor[1]-1000)*TRIKOPLAN_FRONT_BOOST)/100 + 1000;
       motor[2] = ((float)(motor[2]-1000)*TRIKOPLAN_FRONT_BOOST)/100 + 1000;
     #endif
+
+#ifndef AIRSPEED
+	// in horizon/angle, do not disable motors!
+	if (f.ANGLE_MODE || f.HORIZON_MODE) { 
+
+	} else {
+	  float radFiangle = tkp_fiangle * 1.570797f; // 90 * 0.0174533f; // where PI/180 ~= 0.0174533
+      float cosFiangle = cos(radFiangle);		
+	  motor[1] = MINCOMMAND + (motor[1] - MINCOMMAND)* cosFiangle;
+	  motor[2] = MINCOMMAND + (motor[2] - MINCOMMAND)* cosFiangle;
+	}
+#endif
+    
     motor[3] = motor[2];
     
     servo[3] = ((int32_t)conf.servoConf[3].rate * axisPID[YAW])/50L + get_middle(3); // GIMBAL YAW
 
-	// dynamic rate for PITCH control via gimbal
-	float dyn_rate=0;
-	// 10.6.2017 disabled dynamic pitch rate
-	//dyn_rate = 1 - pressure_diff / TRIKOPLAN_PRESSURE_CRTICAL;
-	if(dyn_rate < 0.3) dyn_rate = 0.3;
+    // dynamic rate for PITCH control via gimbal
+    float dyn_rate=0;
+    // 10.6.2017 disabled dynamic pitch rate
+    //dyn_rate = 1 - pressure_diff / TRIKOPLAN_PRESSURE_CRTICAL;
+    if(dyn_rate < 0.3) dyn_rate = 0.3;
     
+  #ifdef TRI_REVERSE
+    servo[4] = dyn_rate*(tkp_fiangle) * (int32_t)conf.servoConf[4].rate * axisPID[PITCH] / 50L + tkp_fiangle*(conf.servoConf[4].middle-S_O_PT) + S_O_PT; // GIMBAL PITCH
+  #else
     servo[4] = dyn_rate*(tkp_fiangle) * SERVODIR(4, 128) * (int32_t)conf.servoConf[4].rate * axisPID[PITCH] / 50L + tkp_fiangle*(conf.servoConf[4].middle-S_O_PT) + S_O_PT; // GIMBAL PITCH
+  #endif
     midpoint  = (conf.servoConf[4].min+conf.servoConf[4].max)/2;
     servo[4] =  midpoint + SERVODIR(4, 128) * (midpoint - servo[4]); // reverse if needed
 
