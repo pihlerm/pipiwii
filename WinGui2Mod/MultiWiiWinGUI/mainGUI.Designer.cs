@@ -2575,7 +2575,7 @@
             0});
             this.nMaxSpeed.Location = new System.Drawing.Point(18, 316);
             this.nMaxSpeed.Maximum = new decimal(new int[] {
-            1000,
+            2000,
             0,
             0,
             0});
